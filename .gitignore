@@ -1,0 +1,7 @@
+.DS_Store
+.env
+.env.*
+config.yaml
+node_modules/
+dist/
+logs/
