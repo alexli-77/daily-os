@@ -40,12 +40,11 @@ Goal: turn weekly and daily plans into calendar drafts without taking control aw
 
 First version:
 
-- `calendar-planning-os draft-week`
-- `calendar-planning-os draft-day`
-- Calendar policy file
-- Existing calendar read
-- Conflict detection
-- Draft output only
+- [Bootstrap calendar-planning-os optional CLI and skill](https://github.com/alexli-77/daily-os/issues/1)
+- [Define calendar policy and draft schema](https://github.com/alexli-77/daily-os/issues/2)
+- [Generate weekly and daily calendar drafts without writeback](https://github.com/alexli-77/daily-os/issues/3)
+- [Add Daily OS calendar bridge and confirmation cards](https://github.com/alexli-77/daily-os/issues/4)
+- [Validate external Mac calendar planning flow](https://github.com/alexli-77/daily-os/issues/5)
 
 Later:
 
