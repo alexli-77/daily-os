@@ -12,7 +12,7 @@ For the current alpha, start with:
 | --- | --- | --- |
 | [daily-os-feishu](https://github.com/alexli-77/daily-os-feishu) | Main local app: Feishu commands, dashboard, scheduler, Mac companion, daily todo/review | `v0.1.0-alpha.2` |
 | [life-review-os](https://github.com/alexli-77/life-review-os) | Weekly / biweekly / quarterly review skill and CLI | Active |
-| calendar-planning-os | Calendar draft and time-block planning engine | Planned |
+| [calendar-planning-os](https://github.com/alexli-77/calendar-planning-os) | Calendar draft and time-block planning engine | Draft-only alpha skeleton |
 
 ## Architecture
 
@@ -82,7 +82,7 @@ It handles:
 
 ### calendar-planning-os
 
-Planned optional engine.
+Draft-first optional engine.
 
 It should handle:
 
@@ -91,7 +91,7 @@ It should handle:
 - Time-block planning
 - Calendar policy and energy preferences
 - Conflict checks
-- Confirmed write-back to calendar providers
+- Future confirmed write-back to calendar providers
 
 Daily OS should call it as a service or CLI. It should not be tightly embedded in `daily-os-feishu`.
 
