@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily OS — a local-first daily planning and review agent for your Mac</title>
+<meta name="description" content="Daily OS is a local-first daily planning and review agent. Every morning it builds a time-blocked plan from your Feishu calendar and tasks, GitHub, Linear and notes; every evening it reviews what actually happened and carries unfinished work to tomorrow. It runs on your own Mac. Open source.">
+<link rel="canonical" href="https://alexli-77.github.io/daily-os/en/">
+<link rel="alternate" hreflang="zh-CN" href="https://alexli-77.github.io/daily-os/">
+<link rel="alternate" hreflang="en" href="https://alexli-77.github.io/daily-os/en/">
+<link rel="alternate" hreflang="x-default" href="https://alexli-77.github.io/daily-os/">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#F0EFEB">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Daily OS">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:title" content="Daily OS — a daily planning and review agent that runs on your Mac">
+<meta property="og:description" content="A plan every morning, a review every evening. Connects Feishu, GitHub and Linear; your data stays on your machine. Open source.">
+<meta property="og:url" content="https://alexli-77.github.io/daily-os/en/">
+<meta property="og:image" content="https://alexli-77.github.io/daily-os/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../assets/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Daily OS",
+  "alternateName": "daily-os",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "macOS",
+  "description": "A local-first daily planning and review agent that integrates Feishu, GitHub and Linear and runs on the user's own Mac.",
+  "url": "https://alexli-77.github.io/daily-os/en/",
+  "image": "https://alexli-77.github.io/daily-os/assets/og.jpg",
+  "screenshot": "https://alexli-77.github.io/daily-os/assets/today-light.jpg",
+  "softwareVersion": "0.2.0",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "codeRepository": "https://github.com/alexli-77/daily-os-backend",
+  "author": { "@type": "Person", "name": "Yang (Léon) Li", "url": "https://github.com/alexli-77" },
+  "inLanguage": ["en", "zh-CN"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What do I need to run Daily OS?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A Mac, Node.js 22 or later, a logged-in Codex CLI (or an OpenAI API key), and either a logged-in lark-cli or a Feishu custom app. Sending commands and pressing cards inside Feishu chat needs the custom app's App ID and App Secret." } },
+    { "@type": "Question", "name": "Where does my data go?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The service runs on your own Mac. Config, memory and tokens live in git-ignored files on your machine. When it builds a plan, the relevant content goes to the model you configured (Codex CLI or OpenAI API), and the output goes to your own Feishu." } },
+    { "@type": "Question", "name": "Is Daily OS free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The service is open source under AGPL-3.0 and the macOS client under MIT." } },
+    { "@type": "Question", "name": "Does it support Windows or the web?",
+      "acceptedAnswer": { "@type": "Answer", "text": "macOS only for now. The service ships a local browser console, and an iOS client is in development." } }
+  ]
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./">Daily OS</a>
+    <nav>
+      <a class="wide" href="#how">How it works</a>
+      <a class="wide" href="#faq">FAQ</a>
+      <a href="https://github.com/alexli-77/daily-os-backend">GitHub</a>
+      <a href="../" hreflang="zh-CN" lang="zh-CN">中文</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <span class="badge">Alpha · Open source · macOS</span>
+      <h1>A plan every morning.<br>A review every evening.</h1>
+      <p class="lede">Daily OS is a planning agent that runs on your own Mac. Each day it gathers what you need to do from your Feishu calendar and tasks, GitHub, Linear and your notes, lays it out in time blocks and sends it to Feishu. In the evening it checks the plan against what actually happened and carries unfinished work to tomorrow.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/alexli-77/daily-os-backend#quick-start">Install guide</a>
+        <a class="btn" href="https://github.com/alexli-77/daily-os-backend">View on GitHub</a>
+      </div>
+      <p class="note">Install from source for now: Node.js 22+, Feishu (lark-cli or a custom app), and Codex CLI or an OpenAI API key.</p>
+    </div>
+
+    <figure class="shot">
+      <img src="../assets/today-light.jpg" width="1800" height="1069" alt="The Today screen of the Daily OS macOS client: a time-blocked plan with finished items struck through, overdue blocks flagged, and unfinished items carried to tomorrow" fetchpriority="high">
+    </figure>
+
+    <section id="what">
+      <h2>What it does for you each day</h2>
+      <p class="sub">Plans are drafts, reviews are grounded in what you did, and nothing is written back without asking.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Builds today's plan</h3>
+          <p>Pulls in Feishu calendar and tasks, GitHub issues assigned to you, Linear work and local notes, schedules them by estimate, and marks the one thing that matters most today (<span class="mit">MIT</span>).</p>
+        </div>
+        <div class="card">
+          <h3>Reviews the day</h3>
+          <p>Compares the plan with what you checked off and sorts it into done, progressed and untouched. Unfinished items move to tomorrow instead of quietly disappearing.</p>
+        </div>
+        <div class="card">
+          <h3>Weekly review and OKR progress</h3>
+          <p>A plan for next week every week. Every two weeks, KR progress against your local OKRs, written back only after you confirm in Feishu.</p>
+        </div>
+        <div class="card">
+          <h3>Works inside Feishu</h3>
+          <p>Send commands and press cards in chat: note something down, check status, or ask for a plan, review or weekly report right now.</p>
+        </div>
+        <div class="card">
+          <h3>Native macOS client</h3>
+          <p>Today, cycles, OKRs, past days and a menu bar item, reading live data from the service on your Mac. Light and dark.</p>
+        </div>
+        <div class="card">
+          <h3>Read-only team view</h3>
+          <p>Each teammate runs Daily OS on their own machine. Their plans for today show up read-only; nobody can edit anyone else's.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="past">
+      <div class="split">
+        <div>
+          <h2>Every day is kept</h2>
+          <p class="sub">Past days keeps each day's final plan, how far you got, and the evening review. Read-only.</p>
+          <ul>
+            <li>Done, partly done, carried over and untouched are recorded separately</li>
+            <li>Each review line carries a reason, such as "PR merged" or "half the suite ran, UI cases left"</li>
+            <li>These records feed the weekly review and OKR progress</li>
+          </ul>
+        </div>
+        <figure class="shot">
+          <img src="../assets/past-days-light.jpg" width="1200" height="976" alt="The Past days screen of Daily OS: yesterday's plan with each item marked done, partly done, carried over or unchecked, followed by the evening review" loading="lazy">
+        </figure>
+      </div>
+    </section>
+
+    <section id="how">
+      <h2>How it works</h2>
+      <p class="sub">Set it up once. After that, plans arrive in Feishu and you reply with progress.</p>
+      <ol class="flow">
+        <li><b>Install the service on your Mac</b><span>Clone the service repo, run <code>npm ci</code>, then <code>npm run setup</code> and connect Feishu and the sources you want.</span></li>
+        <li><b>Try it without sending</b><span>Run <code>npm run plan -- --no-send</code> to see the plan it would send. Turn on real delivery once you like it.</span></li>
+        <li><b>Install it as a background service</b><span><code>launchd</code> starts it at login. Jobs missed while the Mac slept are caught up the same day.</span></li>
+        <li><b>Use it from Feishu every day</b><span>A plan in the morning, progress during the day, a review in the evening, next week's plan at the weekend.</span></li>
+      </ol>
+    </section>
+
+    <section id="privacy">
+      <h2>Your data stays on your machine</h2>
+      <p class="sub">Daily OS has no cloud account and no server of its own.</p>
+      <table>
+        <tr><th>What</th><th>Where it lives</th></tr>
+        <tr><td>Config, tokens, Feishu IDs</td><td><code>.env</code> and <code>config/config.yaml</code> on your Mac, never committed</td></tr>
+        <tr><td>Memory, plans, reviews</td><td>A local data directory</td></tr>
+        <tr><td>The model that writes plans</td><td>Your own Codex CLI login or your own OpenAI API key</td></tr>
+        <tr><td>Calendar writes</td><td>Drafted first, written only after you confirm</td></tr>
+      </table>
+    </section>
+
+    <section id="open-source">
+      <h2>Open source</h2>
+      <div class="grid">
+        <div class="card">
+          <h3><a href="https://github.com/alexli-77/daily-os-backend">daily-os-backend</a></h3>
+          <p>The service: scheduler, data sources, Feishu interaction, local console. AGPL-3.0.</p>
+        </div>
+        <div class="card">
+          <h3><a href="https://github.com/alexli-77/daily-os-macos">daily-os-macos</a></h3>
+          <p>The native macOS client and shared design system. MIT.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2>FAQ</h2>
+      <details>
+        <summary>What do I need to run Daily OS?</summary>
+        <p>A Mac, Node.js 22 or later, a logged-in Codex CLI (or an OpenAI API key), and either a logged-in lark-cli or a Feishu custom app. Sending commands and pressing cards inside Feishu chat needs the custom app's App ID and App Secret.</p>
+      </details>
+      <details>
+        <summary>Where does my data go?</summary>
+        <p>The service runs on your own Mac. Config, memory and tokens live in git-ignored files on your machine. When it builds a plan, the relevant content goes to the model you configured (Codex CLI or OpenAI API), and the output goes to your own Feishu.</p>
+      </details>
+      <details>
+        <summary>Is it free?</summary>
+        <p>Yes. The service is open source under AGPL-3.0 and the macOS client under MIT.</p>
+      </details>
+      <details>
+        <summary>Does it support Windows or the web?</summary>
+        <p>macOS only for now. The service ships a local browser console, and an iOS client is in development.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    Daily OS is built by <a href="https://github.com/alexli-77">Leon</a> ·
+    <a href="https://github.com/alexli-77/daily-os-backend">GitHub</a> ·
+    <a href="../" hreflang="zh-CN" lang="zh-CN">中文</a>
+  </footer>
+</div>
+</body>
+</html>

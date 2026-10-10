@@ -1,104 +1,34 @@
 # Daily OS
 
-Daily OS is a local-first personal operating layer for planning, review, and AI-assisted execution.
+**Website: https://alexli-77.github.io/daily-os/** · [English](https://alexli-77.github.io/daily-os/en/)
 
-This repository is the umbrella map. It does not contain the product runtime. Use it to understand which project does what, where to start, and what is optional.
+Daily OS is a local-first daily planning and review agent for macOS. Every
+morning it builds a time-blocked plan from your Feishu calendar and tasks,
+GitHub, Linear and notes; every evening it reviews what actually happened.
 
-## Start Here
+This repository is the source of that website, served by GitHub Pages from the
+repository root. It contains no product code.
 
-For the current alpha, start with:
+## Source code
 
-| Project | Role | Status |
+| Repository | What | License |
 | --- | --- | --- |
-| [daily-os-feishu](https://github.com/alexli-77/daily-os-feishu) | Main local app: Feishu commands, dashboard, scheduler, Mac companion, daily todo/review | `v0.1.0-alpha.2` |
-| [life-review-os](https://github.com/alexli-77/life-review-os) | Weekly / biweekly / quarterly review skill and CLI | Active |
-| [calendar-planning-os](https://github.com/alexli-77/calendar-planning-os) | Calendar draft and time-block planning engine | Draft-only alpha skeleton |
+| [daily-os-backend](https://github.com/alexli-77/daily-os-backend) | The service: scheduler, data sources, Feishu interaction, local console | AGPL-3.0 |
+| [daily-os-macos](https://github.com/alexli-77/daily-os-macos) | Native macOS client and shared design system | MIT |
 
-## Architecture
+## Editing the site
 
-```mermaid
-flowchart TD
-  user["User"]
-  feishu["Feishu / Lark"]
-  dashboard["Daily OS Dashboard"]
-  companion["Mac Companion"]
-  core["daily-os-feishu"]
-  review["life-review-os"]
-  calendar["calendar-planning-os"]
-  vault["Local Vault / Memory"]
-  linear["Linear / GitHub"]
-  cal["Calendar Provider"]
+Plain HTML and CSS, no build step.
 
-  user --> feishu
-  user --> dashboard
-  user --> companion
-  feishu --> core
-  dashboard --> core
-  companion --> core
-  core --> vault
-  core --> linear
-  core --> review
-  core --> calendar
-  calendar --> cal
+- `index.html`: Chinese page (default)
+- `en/index.html`: English page; keep it in step with the Chinese one
+- `assets/`: stylesheet, screenshots (from `daily-os-macos/docs`), Open Graph image
+- `sitemap.xml`, `llms.txt`: update `lastmod` and facts when the pages change
+
+Preview locally:
+
+```bash
+python3 -m http.server 8000
 ```
 
-## Design Principle
-
-Daily OS should keep the user in control.
-
-- Plans are drafts before they become commitments.
-- Calendar writes require confirmation.
-- Personal memory and config stay local.
-- Optional engines should be installable without making the main app fragile.
-
-## Repositories
-
-### daily-os-feishu
-
-The main entry point for the current alpha.
-
-It handles:
-
-- Feishu commands and message cards
-- Daily plan and daily review
-- Weekly review command routing
-- Dashboard setup and local config
-- Decision policy editing
-- Daily todo inbox
-- Mac companion prototype
-- `launchd` service install
-
-### life-review-os
-
-The deeper review engine.
-
-It handles:
-
-- Weekly review
-- Biweekly review
-- Quarterly review
-- Feishu Weekly document read/write
-- Review skill instructions and CLI
-
-### calendar-planning-os
-
-Draft-first optional engine.
-
-It should handle:
-
-- Weekly calendar drafts
-- Daily calendar adjustments
-- Time-block planning
-- Calendar policy and energy preferences
-- Conflict checks
-- Future confirmed write-back to calendar providers
-
-Daily OS should call it as a service or CLI. It should not be tightly embedded in `daily-os-feishu`.
-
-## Current Release
-
-Current alpha: [daily-os-feishu v0.1.0-alpha.2](https://github.com/alexli-77/daily-os-feishu/releases/tag/v0.1.0-alpha.2)
-
-## Next
-
-See [docs/roadmap.md](docs/roadmap.md).
+Then open http://localhost:8000/.

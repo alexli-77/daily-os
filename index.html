@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily OS — 跑在你自己 Mac 上的日计划与复盘 Agent（飞书 · macOS）</title>
+<meta name="description" content="Daily OS 是本地优先的个人日计划与复盘 Agent：每天早上从飞书日历、任务、GitHub、Linear 和你的笔记生成当天的通告单，晚上对照实际做复盘，没做完的顺到明天。服务跑在你自己的 Mac 上，数据不出本机。开源。">
+<link rel="canonical" href="https://alexli-77.github.io/daily-os/">
+<link rel="alternate" hreflang="zh-CN" href="https://alexli-77.github.io/daily-os/">
+<link rel="alternate" hreflang="en" href="https://alexli-77.github.io/daily-os/en/">
+<link rel="alternate" hreflang="x-default" href="https://alexli-77.github.io/daily-os/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#F0EFEB">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Daily OS">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:title" content="Daily OS — 跑在你自己 Mac 上的日计划与复盘 Agent">
+<meta property="og:description" content="早上一张通告单，晚上一次复盘。连飞书、GitHub、Linear，数据留在本机。开源。">
+<meta property="og:url" content="https://alexli-77.github.io/daily-os/">
+<meta property="og:image" content="https://alexli-77.github.io/daily-os/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="assets/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Daily OS",
+  "alternateName": "daily-os",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "macOS",
+  "description": "本地优先的个人日计划与复盘 Agent，集成飞书、GitHub 与 Linear，服务运行在用户自己的 Mac 上。",
+  "url": "https://alexli-77.github.io/daily-os/",
+  "image": "https://alexli-77.github.io/daily-os/assets/og.jpg",
+  "screenshot": "https://alexli-77.github.io/daily-os/assets/today-light.jpg",
+  "softwareVersion": "0.2.0",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "codeRepository": "https://github.com/alexli-77/daily-os-backend",
+  "author": { "@type": "Person", "name": "Yang (Léon) Li", "url": "https://github.com/alexli-77" },
+  "inLanguage": ["zh-CN", "en"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Daily OS 需要什么环境？",
+      "acceptedAnswer": { "@type": "Answer", "text": "一台 Mac、Node.js 22 以上、本机已登录的 Codex CLI（或一个 OpenAI API key），以及已登录的 lark-cli 或一个飞书自建应用。想在飞书聊天里直接发命令、点卡片，需要自建应用的 App ID 和 App Secret。" } },
+    { "@type": "Question", "name": "我的数据会上传到哪里？",
+      "acceptedAnswer": { "@type": "Answer", "text": "服务跑在你自己的 Mac 上，配置、记忆和 token 都存在本机被 git 忽略的文件里。生成计划时，相关内容会发给你自己配置的模型（Codex CLI 或 OpenAI API），输出发到你自己的飞书。" } },
+    { "@type": "Question", "name": "Daily OS 收费吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "免费。服务端以 AGPL-3.0 开源，macOS 客户端以 MIT 开源。" } },
+    { "@type": "Question", "name": "支持 Windows 或网页版吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "目前只支持 macOS。服务自带一个本地浏览器控制台，iOS 客户端在开发中。" } }
+  ]
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./">Daily OS</a>
+    <nav>
+      <a class="wide" href="#how">怎么用</a>
+      <a class="wide" href="#faq">常见问题</a>
+      <a href="https://github.com/alexli-77/daily-os-backend">GitHub</a>
+      <a href="en/" hreflang="en" lang="en">English</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <span class="badge">Alpha · 开源 · macOS</span>
+      <h1>早上一张通告单，<br>晚上一次复盘。</h1>
+      <p class="lede">Daily OS 是跑在你自己 Mac 上的日计划 Agent。它每天从飞书日历、任务、GitHub、Linear 和你的笔记里收集今天要做的事，排成带时段的计划发到飞书；晚上对照实际做复盘，没做完的顺到明天。</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/alexli-77/daily-os-backend#快速开始">安装指南</a>
+        <a class="btn" href="https://github.com/alexli-77/daily-os-backend">在 GitHub 查看</a>
+      </div>
+      <p class="note">目前需要从源码安装：Node.js 22+、飞书（lark-cli 或自建应用）、Codex CLI 或 OpenAI API key。</p>
+    </div>
+
+    <figure class="shot">
+      <img src="assets/today-light.jpg" width="1800" height="1069" alt="Daily OS macOS 客户端的「今天」页面：按估时排好时段的通告单，已完成的划掉，过了时段还没更新的标绿提醒，没做完的顺到明天" fetchpriority="high">
+    </figure>
+
+    <section id="what">
+      <h2>它每天替你做的事</h2>
+      <p class="sub">计划是草稿，复盘有依据，写回之前先问你。</p>
+      <div class="grid">
+        <div class="card">
+          <h3>生成今天的通告单</h3>
+          <p>汇总飞书日历和任务、GitHub 指给你的 issue、Linear 的工作项和本地笔记，按估时从早排到晚，标出今天最重要的那一件（<span class="mit">MIT</span>）。</p>
+        </div>
+        <div class="card">
+          <h3>晚上对账复盘</h3>
+          <p>对照计划和你当天勾掉的进度，分成完成、推进了、没动三类。没做完的顺到明天，不会悄悄消失。</p>
+        </div>
+        <div class="card">
+          <h3>周复盘与 OKR 进度</h3>
+          <p>每周出下周安排；每两周按本地 OKR 算一次 KR 进度增量，在飞书里点确认后才写回。</p>
+        </div>
+        <div class="card">
+          <h3>在飞书里直接操作</h3>
+          <p>在聊天里发命令、点卡片：记一条、查状态、让它现在出计划、复盘或周报，不用打开别的应用。</p>
+        </div>
+        <div class="card">
+          <h3>原生 macOS 客户端</h3>
+          <p>今天、周期、OKR、往日记录和菜单栏项。读的是你本机服务的真实数据，浅色深色都有。</p>
+        </div>
+        <div class="card">
+          <h3>团队只读同步</h3>
+          <p>队友各自在自己的机器上跑，今日计划推送过来只读展示，谁也改不了谁的。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="past">
+      <div class="split">
+        <div>
+          <h2>每一天都留得住</h2>
+          <p class="sub">往日页面保存每天最后一版计划、当天勾到哪一步、晚上的复盘。只能看，不能改。</p>
+          <ul>
+            <li>完成、做了一部分、顺延、没动，四种状态分开记</li>
+            <li>复盘附一句原因，比如「PR 已合并」「跑完一半，剩 UI 用例」</li>
+            <li>这些记录就是周复盘和 OKR 进度的依据</li>
+          </ul>
+        </div>
+        <figure class="shot">
+          <img src="assets/past-days-light.jpg" width="1200" height="976" alt="Daily OS 往日页面：昨天的计划逐条显示完成、部分完成、顺延和没勾，下方是晚上的复盘" loading="lazy">
+        </figure>
+      </div>
+    </section>
+
+    <section id="how">
+      <h2>怎么用</h2>
+      <p class="sub">配好一次，之后每天在飞书里收计划、回进度就行。</p>
+      <ol class="flow">
+        <li><b>在 Mac 上装好服务</b><span>clone 服务仓库，<code>npm ci</code> 后运行 <code>npm run setup</code>，按引导连上飞书和你要用的数据源。</span></li>
+        <li><b>先试一次，不发送</b><span><code>npm run plan -- --no-send</code> 看看生成的计划，内容满意再打开真实发送。</span></li>
+        <li><b>装成后台服务</b><span>由 <code>launchd</code> 开机自启。Mac 睡眠错过的任务，醒来后当天会补跑。</span></li>
+        <li><b>每天在飞书里用</b><span>早上收计划，白天回进度，晚上收复盘，周末收下周安排。</span></li>
+      </ol>
+    </section>
+
+    <section id="privacy">
+      <h2>数据留在你的机器上</h2>
+      <p class="sub">Daily OS 没有云端账号，也没有它自己的服务器。</p>
+      <table>
+        <tr><th>东西</th><th>放在哪</th></tr>
+        <tr><td>配置、token、飞书 ID</td><td>本机 <code>.env</code> 和 <code>config/config.yaml</code>，不进 git</td></tr>
+        <tr><td>记忆、计划、复盘记录</td><td>本机数据目录</td></tr>
+        <tr><td>生成计划用的模型</td><td>你自己登录的 Codex CLI，或你自己的 OpenAI API key</td></tr>
+        <tr><td>日历写入</td><td>先出草稿，你确认之后才写</td></tr>
+      </table>
+    </section>
+
+    <section id="open-source">
+      <h2>开源</h2>
+      <div class="grid">
+        <div class="card">
+          <h3><a href="https://github.com/alexli-77/daily-os-backend">daily-os-backend</a></h3>
+          <p>服务端：调度、数据源、飞书交互、本地控制台。AGPL-3.0。</p>
+        </div>
+        <div class="card">
+          <h3><a href="https://github.com/alexli-77/daily-os-macos">daily-os-macos</a></h3>
+          <p>原生 macOS 客户端和共享设计系统。MIT。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2>常见问题</h2>
+      <details>
+        <summary>需要什么环境？</summary>
+        <p>一台 Mac、Node.js 22 以上、本机已登录的 Codex CLI（或一个 OpenAI API key），以及已登录的 lark-cli 或一个飞书自建应用。想在飞书聊天里直接发命令、点卡片，需要自建应用的 App ID 和 App Secret。</p>
+      </details>
+      <details>
+        <summary>我的数据会上传到哪里？</summary>
+        <p>服务跑在你自己的 Mac 上，配置、记忆和 token 都存在本机被 git 忽略的文件里。生成计划时，相关内容会发给你自己配置的模型（Codex CLI 或 OpenAI API），输出发到你自己的飞书。</p>
+      </details>
+      <details>
+        <summary>收费吗？</summary>
+        <p>免费。服务端以 AGPL-3.0 开源，macOS 客户端以 MIT 开源。</p>
+      </details>
+      <details>
+        <summary>支持 Windows 或网页版吗？</summary>
+        <p>目前只支持 macOS。服务自带一个本地浏览器控制台，iOS 客户端在开发中。</p>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    Daily OS 由 <a href="https://github.com/alexli-77">Leon</a> 开发 ·
+    <a href="https://github.com/alexli-77/daily-os-backend">GitHub</a> ·
+    <a href="en/" hreflang="en" lang="en">English</a>
+  </footer>
+</div>
+</body>
+</html>
