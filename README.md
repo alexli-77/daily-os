@@ -2,9 +2,10 @@
 
 **Website: https://alexli-77.github.io/daily-os/** · [English](https://alexli-77.github.io/daily-os/en/)
 
-Daily OS is a local-first daily planning and review agent for macOS. Every
-morning it builds a time-blocked plan from your Feishu calendar and tasks,
-GitHub, Linear and notes; every evening it reviews what actually happened.
+Daily OS is a local-first personal planning agent for macOS. Built on "Put
+First Things First" from *The 7 Habits of Highly Effective People*, it breaks
+five-year, annual and quarterly OKRs into plans for each cycle and each day,
+drawing on your Feishu calendar and tasks, GitHub, Linear and notes.
 
 This repository is the source of that website, served by GitHub Pages from the
 repository root. It contains no product code.

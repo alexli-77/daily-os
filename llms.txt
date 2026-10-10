@@ -1,6 +1,6 @@
 # Daily OS
 
-> Daily OS is a local-first daily planning and review agent for macOS. It builds a time-blocked daily plan from Feishu (Lark) calendar and tasks, GitHub issues, Linear work and local notes, sends it to Feishu, reviews the day in the evening, and carries unfinished work to the next day. The service runs on the user's own Mac; it has no cloud account or server of its own. Free and open source.
+> Daily OS is a local-first personal planning agent for macOS. Built on "Put First Things First" from Stephen Covey's The 7 Habits of Highly Effective People, it manages three levels of OKRs (five-year North Star, annual, current/quarterly) and breaks them into plans for each cycle and each day, drawing on Feishu (Lark) calendar and tasks, GitHub issues, Linear work and local notes. It sends plans to Feishu, reviews the day in the evening, and carries unfinished work to the next day. The service runs on the user's own Mac; it has no cloud account or server of its own. Free and open source.
 
 ## Product
 
